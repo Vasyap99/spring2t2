@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Редактирование данных о человеке</title>
+</head>
+
+<body>
+
+
+<form th:method="POST" th:action="@{/people/update}" th:object="${person}">
+    <input type="text" th:field="*{fio}" id="fio" th:value="*{fio}">
+    <br>
+    <input type="submit" value="update">
+</form>
+
+</body>
+</html>

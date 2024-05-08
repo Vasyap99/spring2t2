@@ -1,0 +1,14 @@
+drop table public.person;
+
+--create table public.person(
+--     id int NOT NULL PRIMARY KEY,
+--     fio varchar
+--)
+
+
+create table public.person(
+     id int primary key,
+     fio varchar
+);
+
+create sequence public.person_id_seq;
