@@ -55,25 +55,20 @@ public class PeopleController {
     public String new1(@PathVariable("id")int id, Model model){
         Person person=dao.get(id);
         model.addAttribute("person",person);
+        model.addAttribute("id",id);
         return "people/update";
     }
 
-    @PostMapping("/update")
-    public String update2(@ModelAttribute("person")Person person){
-        dao.update(person);
+    @PostMapping("/update/{id}")
+    public String update2(@ModelAttribute("person")Person person,@PathVariable("id")int id){
+        dao.update(person,id);
         return "redirect:/people";
     }
 
     @GetMapping("/delete/{id}")
     public String del(@PathVariable("id")int id, Model model){
-        Person person=dao.get(id);
-        model.addAttribute("person",person);
-        return "people/delete";
-    }
-
-    @PostMapping("/delete")
-    public String del(@ModelAttribute("person")Person person){
-        dao.delete(person);
+        dao.delete(id);
         return "redirect:/people";
     }
+
 }

@@ -50,14 +50,14 @@ public class PersonDAO{
     }
 
     @Transactional
-    public void update(Person person){
+    public void update(Person person,int id){
         Session session = sessionFactory.getCurrentSession();
        
-        //session.merge(person);
+        Person p1=session.get(Person.class,id);
 
-        //session.update(person);
+        p1.setFio(person.getFio());
 
-        session.replicate(person,ReplicationMode.OVERWRITE); 
+        ///session.replicate(person,ReplicationMode.OVERWRITE); 
 
     }
 
@@ -65,14 +65,15 @@ public class PersonDAO{
     public Person get(int id){
         Session session=sessionFactory.getCurrentSession();
         Person p= session.get(Person.class,id);
-        session.detach(p);
+        //session.detach(p);
         return p; 
     }
 
     @Transactional
-    public void delete(Person person){
+    public void delete(int id){
         Session session = sessionFactory.getCurrentSession();
         //session.beginTransaction();
+        Person person=get(id);
         session.delete(person);
         //session.getTransaction().commit();
     }
