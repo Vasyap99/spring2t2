@@ -58,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin();//.successHandler(new myAuthenticationSuccessHandler())
         ;
         ///return http.build();
+		super.configure(http);//?? from proj
     }
 
 

@@ -34,36 +34,48 @@ import java.util.Properties;
 
 @Configuration
 @ComponentScan("kok.spring21")           //skanirovanie proishodit takzhe vo vlozhennyh papkah rekursivno
-@EnableWebMvc
-public class SpringConfig implements WebMvcConfigurer{
+@PropertySource("classpath:hibernate.properties")
+@EnableTransactionManagement
+public class PersistenceConfig{
 
 	private final Environment env;
 	private final ApplicationContext ac;
 	
 	@Autowired
-	public SpringConfig(ApplicationContext c,Environment env){ac=c;this.env=env;}
+	public PersistenceConfig(ApplicationContext c,Environment env){ac=c;this.env=env;}
+
+    private Properties hibernateProperties(){
+		Properties properties=new Properties();
+		properties.put("ibernate.dialect",env.getRequiredProperty("hibernate.dialect"));
+		properties.put("ibernate.show_sql",env.getRequiredProperty("hibernate.show_sql"));
+		return properties;
+    }
 
 	@Bean
-	public SpringResourceTemplateResolver templateResolver(){
-		SpringResourceTemplateResolver tr=new SpringResourceTemplateResolver();
-		tr.setApplicationContext(ac);
-		tr.setPrefix("WEB-INF/views/");
-		tr.setSuffix(".html");
-		return tr;
-	}	
+    LocalSessionFactoryBean sessionFactory(){
+		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+		sessionFactory.setDataSource(dataSource());
+		sessionFactory.setPackagesToScan("kok.spring21.models");
+		sessionFactory.setHibernateProperties(hibernateProperties());
+		return sessionFactory;
+    }
 
 	@Bean
-	public SpringTemplateEngine templateEngine(){
-		SpringTemplateEngine te=new SpringTemplateEngine();
-		te.setTemplateResolver(templateResolver());
-		te.setEnableSpringELCompiler(true);
-		return te;
+	public PlatformTransactionManager hibernateTransactionManager(){
+		HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+		transactionManager.setSessionFactory(sessionFactory().getObject());
+		return transactionManager;
 	}
-	@Override
-	public void configureViewResolvers(ViewResolverRegistry r){
-		ThymeleafViewResolver vr=new ThymeleafViewResolver();
-		vr.setTemplateEngine(templateEngine());
-		r.viewResolver(vr);
-	}
+
+	@Bean
+    DataSource dataSource(){
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName(env.getRequiredProperty("hibernate.driver_class"));
+		dataSource.setUrl(env.getRequiredProperty("hibernate.connection.url"));
+		dataSource.setUsername(env.getRequiredProperty("hibernate.connection.username"));
+
+		dataSource.setPassword(env.getRequiredProperty("hibernate.connection.password"));
+		return dataSource;
+    }
 
 }
