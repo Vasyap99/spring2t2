@@ -27,9 +27,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ComponentScan;
 
-@EnableWebSecurity
 @Configuration
+@ComponentScan("kok.spring21")
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -47,10 +49,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/admin/**").authenticated() //.hasRole("ADMIN")
                 .antMatchers("/admin/1").permitAll()
+                .antMatchers("/admin/2").authenticated()
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/register/**").permitAll()
                 .antMatchers( "/favicon.ico").permitAll()
-                .antMatchers("/**").authenticated()//hasAnyRole()
+                //.antMatchers("/**").authenticated()//hasAnyRole()
                 .and()
                 .formLogin();//.successHandler(new myAuthenticationSuccessHandler())
         ;
