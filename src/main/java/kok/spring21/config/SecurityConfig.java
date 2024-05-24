@@ -56,14 +56,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }catch(Exception e){}
         System.out.println(">>>SC-c()");
         ///a.authenticationProvider(ap);
+        
         a.inMemoryAuthentication()
                 .withUser("u1")
                    .password("p1")
-                   .authorities("ROLE_USER")
+                   .authorities("ROLE_USER").password("{noop}p1")
                 .and()
                 .withUser("u2")
                    .password("p2")
-                   .authorities("ROLE_USER");
+                   .authorities("ROLE_ADMIN").password("{noop}p2");
         try{
             RandomAccessFile raf = new RandomAccessFile("c:/#/log-spr.txt", "rw");
 
@@ -92,6 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
         .antMatchers("/people/**").permitAll()
+        .antMatchers("/admin/**").hasRole("ADMIN")
         .anyRequest().authenticated()
         .and()
         .httpBasic()
