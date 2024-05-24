@@ -2,7 +2,8 @@ package kok.spring21.config;
 
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
+import org.springframework.web.filter.HiddenHttpMethodFilter;
+import javax.servlet.Filter;
 
 class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer{
 	@Override
@@ -16,5 +17,10 @@ class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDi
 	@Override
     protected String[] getServletMappings(){
 		return new String[] {"/"};
+    }
+
+	@Override
+    protected Filter[] getServletFilters(){
+		return new Filter[] {new HiddenHttpMethodFilter()};
     }
 }
