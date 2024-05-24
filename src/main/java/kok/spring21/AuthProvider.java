@@ -38,6 +38,7 @@ public class AuthProvider implements AuthenticationProvider {
 
         System.out.println(">>LOGINING:"+user+":"+pasw);
         ///UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, pasw, List.of("ROLE_USER"));
+        if(1==1) throw new BadCredentialsException("err");
 
         return null; ///usernamePasswordAuthenticationToken;
     }

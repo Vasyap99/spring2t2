@@ -29,6 +29,11 @@ import java.util.Map;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ComponentScan;
 
+
+import java.io.RandomAccessFile;
+
+
+
 @Configuration
 @ComponentScan("kok.spring21")
 @EnableWebSecurity
@@ -39,12 +44,43 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder a) throws Exception{
+        try{
+            RandomAccessFile raf = new RandomAccessFile("c:/#/log-spr.txt", "rw");
+
+            raf.seek(raf.length());
+            //читаем строку, начиная с текущего положения курсора и до конца строки
+            raf.writeBytes(">>0 configure1()");
+
+            //закрываем файл
+            raf.close();
+        }catch(Exception e){}
         System.out.println(">>>SC-c()");
         a.authenticationProvider(ap);
+        try{
+            RandomAccessFile raf = new RandomAccessFile("c:/#/log-spr.txt", "rw");
+
+            raf.seek(raf.length());
+            //читаем строку, начиная с текущего положения курсора и до конца строки
+            raf.writeBytes(">>E configure1()");
+
+            //закрываем файл
+            raf.close();
+        }catch(Exception e){}
     }
 
-
+    @Override
     protected void configure(HttpSecurity http) throws Exception{
+        try{
+            RandomAccessFile raf = new RandomAccessFile("c:/#/log-spr.txt", "rw");
+
+            raf.seek(raf.length());
+            //читаем строку, начиная с текущего положения курсора и до конца строки
+            raf.writeBytes(">>0 configure()");
+
+            //закрываем файл
+            raf.close();
+        }catch(Exception e){}
+
         http.authorizeRequests()
 
                 .antMatchers("/admin/**").authenticated() //.hasRole("ADMIN")
@@ -53,12 +89,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/register/**").permitAll()
                 .antMatchers( "/favicon.ico").permitAll()
-                //.antMatchers("/**").authenticated()//hasAnyRole()
+                .antMatchers("/**").hasRole("ADMIN")//hasAnyRole()
+                .antMatchers("/").hasRole("ADMIN")
                 .and()
                 .formLogin();//.successHandler(new myAuthenticationSuccessHandler())
         ;
         ///return http.build();
 		super.configure(http);//?? from proj
+
+        try{
+            RandomAccessFile raf = new RandomAccessFile("c:/#/log-spr.txt", "rw");
+            
+            raf.seek(raf.length());
+            //читаем строку, начиная с текущего положения курсора и до конца строки
+            raf.writeBytes(">>E configure()");
+
+            //закрываем файл
+            raf.close();
+        }catch(Exception e){}
     }
 
 
