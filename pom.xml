@@ -199,7 +199,20 @@
 </dependency-->
 
 
+<!-- AOP -->
+<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjweaver</artifactId>
+    <version>1.9.22.1</version>
+    <scope>runtime</scope>
+</dependency>
 
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.6.7</version>
+        </dependency>
 
   </dependencies>
 

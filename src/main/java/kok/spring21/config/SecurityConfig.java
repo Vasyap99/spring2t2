@@ -29,12 +29,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ComponentScan;
 
 
+
+import org.springframework.context.annotation.*;
+import org.springframework.transaction.annotation.*;
+
+
 import kok.spring21.myLogger;
 
 
 @Configuration
 @ComponentScan("kok.spring21")
 @EnableWebSecurity
+@EnableAspectJAutoProxy
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
